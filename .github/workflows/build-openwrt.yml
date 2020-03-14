@@ -89,7 +89,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 V=s
+        make package/feeds/luci/luci-base/compile  -j$(nproc) V=99 || make make package/lean/luci-app-ssr-plus/compile -j1 V=s
         echo "::set-output name=status::success"
 
     - name: Upload bin directory
@@ -103,8 +103,6 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
